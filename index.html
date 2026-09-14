@@ -2116,7 +2116,7 @@
         <div class="bento-grid">
 
           <!-- BENTO 1 (FEATURED - Large 2-column card): Career Copilot -->
-          <a href="https://career-copilot-eta.vercel.app" target="_blank" rel="noopener noreferrer" class="bento-card bento-featured scroll-reveal magnetic-target" data-cursor="pointer">
+          <div class="bento-card bento-featured scroll-reveal magnetic-target" data-cursor="pointer" onclick="window.open('https://career-copilot-eta.vercel.app','_blank')" style="cursor:pointer;">
             <div>
               <div class="bento-header">
                 <span class="bento-status-pill deployed">
@@ -2189,10 +2189,10 @@
               <span class="tag-chip">SQLite</span>
               <span class="tag-chip">sentence-transformers</span>
             </div>
-          </a>
+          </div>
 
           <!-- BENTO 1B: OpportUnity (NEW CARD) -->
-          <a href="https://client-eight-gamma-45.vercel.app" target="_blank" rel="noopener noreferrer" class="bento-card scroll-reveal magnetic-target" data-cursor="pointer">
+          <div class="bento-card scroll-reveal magnetic-target" data-cursor="pointer" onclick="window.open('https://client-eight-gamma-45.vercel.app','_blank')" style="cursor:pointer;">
             <div>
               <div class="bento-header">
                 <span class="bento-status-pill deployed">
@@ -2234,7 +2234,7 @@
               <span class="tag-chip">Leaflet.js</span>
               <span class="tag-chip">Tailwind</span>
             </div>
-          </a>
+          </div>
 
           <!-- BENTO 2: TripleThreatEsports -->
           <div class="bento-card scroll-reveal magnetic-target" data-cursor="pointer">
@@ -2861,27 +2861,26 @@
       })();
 
       // ================================================================
-      // 3D TILT EFFECT ON BENTO CARDS (Desktop only)
+      // 3D TILT EFFECT ON STACK & FEATURE CARDS (Desktop only)
       // ================================================================
       (function () {
         if (window.innerWidth < 900 || prefersReducedMotion) return;
 
-        const tiltCards = document.querySelectorAll('.bento-card, .tilt-card');
+        // Only tilt stack/feature cards, not bento-cards (they have their own hover transforms)
+        const tiltCards = document.querySelectorAll('.stack-card, .feature-card, .cert-card');
 
         tiltCards.forEach((card) => {
-          card.classList.add('tilt-card');
-
           card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
             const cx = rect.left + rect.width / 2;
             const cy = rect.top + rect.height / 2;
-            const rx = ((e.clientY - cy) / (rect.height / 2)) * -6;
-            const ry = ((e.clientX - cx) / (rect.width / 2)) * 6;
-            card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.018,1.018,1.018)`;
+            const rx = ((e.clientY - cy) / (rect.height / 2)) * -5;
+            const ry = ((e.clientX - cx) / (rect.width / 2)) * 5;
+            card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
           });
 
           card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+            card.style.transform = '';
           });
         });
       })();
@@ -2919,6 +2918,8 @@
 </body>
 
 </html>
+
+
 
 
 
