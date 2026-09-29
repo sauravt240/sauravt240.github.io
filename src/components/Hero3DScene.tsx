@@ -4,17 +4,17 @@ import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Inner 3D Sculpture Component
-const AbstractCore: React.FC<{ mousePos: { x: number; y: number }; isReducedMotion: boolean }> = ({
-  mousePos,
-  isReducedMotion,
-}) => {
+const AbstractCore: React.FC<{
+  mousePosRef: React.RefObject<{ x: number; y: number }>;
+  isReducedMotion: boolean;
+}> = ({ mousePosRef, isReducedMotion }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const wireframeRef = useRef<THREE.LineSegments>(null);
   const pointsRef = useRef<THREE.Points>(null);
 
   // Generate particles for ambient subtle depth
   const [particlePositions, particleColors] = useMemo(() => {
-    const count = 160;
+    const count = 120; // Slightly reduced particle count for optimal mobile fill-rate
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
 
@@ -55,9 +55,10 @@ const AbstractCore: React.FC<{ mousePos: { x: number; y: number }; isReducedMoti
         pointsRef.current.rotation.z += delta * 0.04;
       }
 
-      // Parallax mouse tilt offset lerping
-      const targetRotX = mousePos.y * 0.45;
-      const targetRotY = mousePos.x * 0.55;
+      // Parallax mouse tilt offset lerping from ref (no React re-renders)
+      const mouse = mousePosRef.current || { x: 0, y: 0 };
+      const targetRotX = mouse.y * 0.45;
+      const targetRotY = mouse.x * 0.55;
 
       meshRef.current.rotation.x = THREE.MathUtils.lerp(meshRef.current.rotation.x, meshRef.current.rotation.x + targetRotX * 0.05, 0.1);
       meshRef.current.rotation.y = THREE.MathUtils.lerp(meshRef.current.rotation.y, meshRef.current.rotation.y + targetRotY * 0.05, 0.1);
@@ -88,7 +89,7 @@ const AbstractCore: React.FC<{ mousePos: { x: number; y: number }; isReducedMoti
       {/* Futuristic accent wireframe */}
       <lineSegments ref={wireframeRef}>
         <wireframeGeometry args={[new THREE.IcosahedronGeometry(1.52, 1)]} />
-        <lineBasicMaterial color="#89AACC" transparent opacity={0.65} linewidth={1.5} />
+        <lineBasicMaterial color="#89AACC" transparent opacity={0.65} />
       </lineSegments>
 
       {/* Orbiting particles */}
@@ -116,7 +117,9 @@ const AbstractCore: React.FC<{ mousePos: { x: number; y: number }; isReducedMoti
 };
 
 export const Hero3DScene: React.FC = () => {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mousePosRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(true);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -126,27 +129,53 @@ export const Hero3DScene: React.FC = () => {
     const handler = (e: MediaQueryListEvent) => setIsReducedMotion(e.matches);
     mediaQuery.addEventListener('change', handler);
 
-    // Mouse movement handler
+    // IntersectionObserver to pause rendering when offscreen
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+
+    // Mouse movement handler directly updating ref (0 React re-renders)
+    let rafId: number | null = null;
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 2 - 1;
-      const y = -(e.clientY / window.innerHeight) * 2 + 1;
-      setMousePos({ x, y });
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        mousePosRef.current = {
+          x: (e.clientX / window.innerWidth) * 2 - 1,
+          y: -(e.clientY / window.innerHeight) * 2 + 1,
+        };
+        rafId = null;
+      });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
       mediaQuery.removeEventListener('change', handler);
+      observer.disconnect();
       window.removeEventListener('mousemove', handleMouseMove);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-85">
+    <div
+      ref={containerRef}
+      className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-85"
+      aria-hidden="true"
+    >
       <Canvas
         camera={{ position: [0, 0, 4.5], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
         dpr={[1, 1.5]}
+        frameloop={isVisible ? 'always' : 'never'}
       >
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 8, 5]} intensity={1.4} color="#89AACC" />
@@ -154,7 +183,7 @@ export const Hero3DScene: React.FC = () => {
         <pointLight position={[0, 4, 2]} intensity={0.9} color="#ffffff" />
 
         <Float speed={isReducedMotion ? 0 : 1.6} rotationIntensity={0.4} floatIntensity={0.5}>
-          <AbstractCore mousePos={mousePos} isReducedMotion={isReducedMotion} />
+          <AbstractCore mousePosRef={mousePosRef} isReducedMotion={isReducedMotion} />
         </Float>
       </Canvas>
     </div>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import gsap from 'gsap';
 import { ArrowDown, ArrowUpRight, Cpu, Layers } from 'lucide-react';
-import { Hero3DScene } from './Hero3DScene';
+const Hero3DScene = React.lazy(() =>
+  import('./Hero3DScene').then((m) => ({ default: m.Hero3DScene }))
+);
 
 const roles = [
   'AI Engineer',
@@ -32,17 +34,17 @@ export const Hero: React.FC = () => {
       if (leftColRef.current) {
         tl.fromTo(
           leftColRef.current.children,
-          { opacity: 0, y: 35, filter: 'blur(8px)' },
-          { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1, stagger: 0.12, delay: 0.1 }
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, delay: 0.05 }
         );
       }
 
       if (rightColRef.current) {
         tl.fromTo(
           rightColRef.current.children,
-          { opacity: 0, scale: 0.9, y: 40 },
-          { opacity: 1, scale: 1, y: 0, duration: 1.2, stagger: 0.15 },
-          '-=0.8'
+          { opacity: 0, scale: 0.95, y: 24 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.9, stagger: 0.1 },
+          '-=0.6'
         );
       }
     }, heroRef);
@@ -62,7 +64,9 @@ export const Hero: React.FC = () => {
       className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-12 pt-28 pb-16 overflow-hidden"
     >
       {/* Three.js Interactive 3D Canvas Background */}
-      <Hero3DScene />
+      <React.Suspense fallback={null}>
+        <Hero3DScene />
+      </React.Suspense>
 
       <div className="relative z-10 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -128,7 +132,7 @@ export const Hero: React.FC = () => {
           <div ref={rightColRef} className="lg:col-span-5 relative flex flex-col gap-5 justify-center py-6">
             
             {/* Mockup Card 1: Career Copilot Live Pipeline */}
-            <div className="group relative rounded-2xl p-5 bg-[#0c0f17]/80 backdrop-blur-xl border border-amber-500/25 shadow-2xl hover:border-amber-500/40 transition-all duration-300 animate-float-1">
+            <div className="group relative rounded-2xl p-5 bg-[#0c0f17]/95 border border-amber-500/25 shadow-2xl hover:border-amber-500/40 transition-all duration-300 animate-float-1 will-change-transform">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2.5">
                   <span className="status-dot amber" />
@@ -169,7 +173,7 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* Mockup Card 2: Design System & Architecture */}
-            <div className="group relative rounded-2xl p-5 bg-[#0c0f17]/80 backdrop-blur-xl border border-[#8B7CFF]/30 shadow-2xl hover:border-[#8B7CFF]/50 transition-all duration-300 animate-float-2 sm:ml-6">
+            <div className="group relative rounded-2xl p-5 bg-[#0c0f17]/95 border border-[#8B7CFF]/30 shadow-2xl hover:border-[#8B7CFF]/50 transition-all duration-300 animate-float-2 will-change-transform sm:ml-6">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2.5">
                   <span className="status-dot mint" />
@@ -199,7 +203,7 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* Mockup Card 3: Core Technology Matrix */}
-            <div className="group relative rounded-2xl p-5 bg-[#0c0f17]/80 backdrop-blur-xl border border-[#4CE0B3]/25 shadow-2xl hover:border-[#4CE0B3]/40 transition-all duration-300 animate-float-3">
+            <div className="group relative rounded-2xl p-5 bg-[#0c0f17]/95 border border-[#4CE0B3]/25 shadow-2xl hover:border-[#4CE0B3]/40 transition-all duration-300 animate-float-3 will-change-transform">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2.5">
                   <Layers className="w-4 h-4 text-[#8B7CFF]" />

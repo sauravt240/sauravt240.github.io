@@ -2,6 +2,7 @@ import React from 'react';
 import { ExternalLink, Bot, Globe2, Gamepad2, Cloud, HeartPulse } from 'lucide-react';
 import { GithubIcon } from './SocialIcons';
 import { Card3DTilt } from './Card3DTilt';
+import { CareerCopilotPipeline } from './CareerCopilotPipeline';
 
 interface Project {
   id: string;
@@ -190,44 +191,8 @@ export const FeaturedWork: React.FC = () => {
                         {project.description}
                       </p>
 
-                      {/* Special Interactive Pipeline Diagram for Career Copilot */}
-                      {project.hasPipeline && (
-                        <div className="pt-2">
-                          <div className="flex items-center justify-between text-[11px] font-mono text-[#94A3B8] mb-2">
-                            <span>Agent Orchestration Pipeline</span>
-                            <span className="text-amber-400">4 Connected Agents</span>
-                          </div>
-                          <div className="flex items-center justify-between p-3 rounded-xl bg-black/40 border border-white/10">
-                            <div className="flex flex-col items-center gap-1">
-                              <div className="px-2.5 py-1 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold shadow-[0_0_8px_rgba(251,191,36,0.3)]">
-                                JD
-                              </div>
-                              <span className="text-[10px] text-[#94A3B8]">Analysis</span>
-                            </div>
-                            <span className="text-xs text-[#64748B]">➔</span>
-                            <div className="flex flex-col items-center gap-1">
-                              <div className="px-2.5 py-1 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold shadow-[0_0_8px_rgba(251,191,36,0.3)]">
-                                MT
-                              </div>
-                              <span className="text-[10px] text-[#94A3B8]">Matching</span>
-                            </div>
-                            <span className="text-xs text-[#64748B]">➔</span>
-                            <div className="flex flex-col items-center gap-1">
-                              <div className="px-2.5 py-1 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold shadow-[0_0_8px_rgba(251,191,36,0.3)]">
-                                TL
-                              </div>
-                              <span className="text-[10px] text-[#94A3B8]">Tailoring</span>
-                            </div>
-                            <span className="text-xs text-[#64748B]">➔</span>
-                            <div className="flex flex-col items-center gap-1">
-                              <div className="px-2.5 py-1 rounded bg-purple-500/20 border border-purple-500/40 text-purple-300 font-mono text-xs font-bold shadow-[0_0_8px_rgba(139,124,255,0.3)]">
-                                IP
-                              </div>
-                              <span className="text-[10px] text-[#94A3B8]">Interview</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                      {/* Special Interactive Pipeline Simulation for Career Copilot */}
+                      {project.hasPipeline && <CareerCopilotPipeline />}
                     </div>
 
                     {/* Bottom: Stack & Action Links */}

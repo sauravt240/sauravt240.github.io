@@ -61,7 +61,7 @@ export const TechStackMatrix: React.FC = () => {
             return (
               <div
                 key={cat.title}
-                className="group relative p-7 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-[#4CE0B3]/35 backdrop-blur-xl transition-all duration-300 shadow-xl flex flex-col justify-between"
+                className="group relative p-7 rounded-2xl bg-[#0c0f17]/90 hover:bg-[#121622]/90 border border-white/[0.08] hover:border-[#4CE0B3]/35 transition-all duration-300 shadow-xl flex flex-col justify-between"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">

@@ -8,19 +8,36 @@ export const ContactFooter: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const email = 'sauravthakur240@gmail.com';
 
-  // GSAP infinite marquee animation
+  // GSAP infinite marquee animation, paused when offscreen
   useEffect(() => {
-    if (!marqueeRef.current) return;
     const el = marqueeRef.current;
+    const footerEl = document.getElementById('contact');
+    if (!el || !footerEl) return;
 
     const tween = gsap.to(el, {
       xPercent: -50,
       repeat: -1,
       duration: 22,
       ease: 'none',
+      paused: true,
     });
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          tween.play();
+        } else {
+          tween.pause();
+        }
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(footerEl);
+
     return () => {
+      observer.disconnect();
       tween.kill();
     };
   }, []);
@@ -46,15 +63,15 @@ export const ContactFooter: React.FC = () => {
         </div>
       )}
 
-      {/* Infinite GSAP Marquee: "BUILDING THE FUTURE • " */}
-      <div className="w-full overflow-hidden border-y border-white/5 py-4 mb-20 bg-white/[0.01]">
-        <div ref={marqueeRef} className="flex whitespace-nowrap will-change-transform">
+      {/* Infinite GSAP Marquee: "BUILDING THE FUTURE • " (decorative, paused offscreen) */}
+      <div className="w-full overflow-hidden border-y border-white/5 py-4 mb-20 bg-white/[0.01]" aria-hidden="true">
+        <div ref={marqueeRef} className="flex whitespace-nowrap will-change-transform opacity-[0.15]">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="flex items-center gap-6 mx-4">
-              <span className="text-3xl md:text-5xl font-display font-bold tracking-widest text-[#F3F4F6]/15 uppercase select-none">
+              <span className="text-3xl md:text-5xl font-display font-bold tracking-widest text-white uppercase select-none">
                 BUILDING THE FUTURE
               </span>
-              <span className="text-xl md:text-2xl text-[#8B7CFF]/40 select-none">•</span>
+              <span className="text-xl md:text-2xl text-[#8B7CFF] select-none">•</span>
             </div>
           ))}
         </div>
@@ -82,7 +99,7 @@ export const ContactFooter: React.FC = () => {
           </div>
 
           {/* Right Column: Email CTA Card */}
-          <div className="lg:col-span-5 flex flex-col justify-between p-8 rounded-3xl bg-white/[0.03] border border-white/10 shadow-2xl space-y-8 backdrop-blur-xl">
+          <div className="lg:col-span-5 flex flex-col justify-between p-8 rounded-3xl bg-[#0c0f17]/95 border border-white/10 shadow-2xl space-y-8">
             <div className="space-y-3">
               <span className="text-xs uppercase tracking-[0.2em] text-[#8B7CFF] font-mono font-semibold">
                 Direct Contact
@@ -111,7 +128,7 @@ export const ContactFooter: React.FC = () => {
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </a>
 
-              <p className="text-center text-[11px] font-mono text-[#64748B]">
+              <p className="text-center text-[11px] font-mono text-[#94A3B8]">
                 Typically responds within 24 hours.
               </p>
             </div>
@@ -164,7 +181,7 @@ export const ContactFooter: React.FC = () => {
         </div>
 
         {/* Copyright */}
-        <div className="flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-[#64748B] pt-6 border-t border-white/5">
+        <div className="flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-[#94A3B8] pt-6 border-t border-white/5">
           <p>© {new Date().getFullYear()} Saurav Thakur. All rights reserved.</p>
           <p className="mt-2 sm:mt-0">React 19 • Vite • Three.js • GSAP • Tailwind CSS</p>
         </div>

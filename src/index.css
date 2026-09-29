@@ -95,9 +95,10 @@
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(110px);
+  filter: blur(64px);
   opacity: 0.22;
   will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .orb-1 {
@@ -120,12 +121,12 @@
 }
 
 .orb-3 {
-  width: 700px;
-  height: 700px;
+  width: 500px;
+  height: 500px;
   background: radial-gradient(circle, #4F46E5 0%, #2E1065 60%, transparent 100%);
   bottom: -10%;
   left: 5%;
-  opacity: 0.24;
+  opacity: 0.20;
   animation: driftOrb3 24s infinite alternate ease-in-out;
 }
 
@@ -140,26 +141,30 @@
 }
 
 @keyframes driftOrb1 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(70px, 50px) scale(1.1); }
-  100% { transform: translate(-50px, 80px) scale(0.95); }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(70px, 50px, 0) scale(1.08); }
+  100% { transform: translate3d(-50px, 80px, 0) scale(0.95); }
 }
 
 @keyframes driftOrb2 {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-80px, -60px) scale(1.15); }
-  100% { transform: translate(-30px, 60px) scale(0.9); }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-80px, -60px, 0) scale(1.1); }
+  100% { transform: translate3d(-30px, 60px, 0) scale(0.9); }
 }
 
 @keyframes driftOrb3 {
-  0% { transform: translate(0, 0) scale(0.95); }
-  50% { transform: translate(60px, -40px) scale(1.1); }
-  100% { transform: translate(100px, 30px) scale(1); }
+  0% { transform: translate3d(0, 0, 0) scale(0.95); }
+  50% { transform: translate3d(60px, -40px, 0) scale(1.05); }
+  100% { transform: translate3d(100px, 30px, 0) scale(1); }
 }
 
 @keyframes driftOrb4 {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(-70px, -50px) scale(1.2); }
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-70px, -50px, 0) scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb { animation: none !important; }
 }
 
 /* Noise overlay */
@@ -205,7 +210,11 @@
     height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
     background-color 0.3s ease,
     border-color 0.3s ease;
-  backdrop-filter: blur(1px);
+}
+
+@keyframes marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 .custom-cursor-dot {

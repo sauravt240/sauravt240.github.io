@@ -46,7 +46,7 @@ export const Navbar: React.FC = () => {
         >
           <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-[#0a0a0a] p-[1.5px] overflow-hidden">
             {/* Spinning accent gradient ring (reverses on hover) */}
-            <div className="absolute inset-0 rounded-full accent-gradient animate-spin group-hover:[animation-direction:reverse] transition-all duration-700" />
+            <div className="absolute inset-0 rounded-full accent-gradient animate-[spin_3s_linear_infinite] group-hover:[animation-direction:reverse] will-change-transform" />
             <div className="relative z-10 flex items-center justify-center w-full h-full rounded-full bg-[#0e0e0e] border border-white/10 group-hover:border-white/25 transition-colors">
               <span className="font-display italic text-sm font-semibold tracking-tighter text-[#f5f5f5] group-hover:text-white">
                 ST

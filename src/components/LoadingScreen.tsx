@@ -11,17 +11,24 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
-  // Rotating words cycling every 900ms
+  // Rotating words cycling every 300ms
   useEffect(() => {
     const wordInterval = setInterval(() => {
       setCurrentWordIndex((prev) => (prev + 1) % words.length);
-    }, 900);
+    }, 280);
     return () => clearInterval(wordInterval);
   }, []);
 
-  // requestAnimationFrame counter 000 -> 100 over 2700ms
+  // Snappy requestAnimationFrame counter 000 -> 100
   useEffect(() => {
-    const duration = 2700;
+    const isReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReduced) {
+      setProgress(100);
+      onComplete();
+      return;
+    }
+
+    const duration = 650;
     let startTime: number | null = null;
     let animationFrameId: number;
 
@@ -35,10 +42,9 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
         animationFrameId = requestAnimationFrame(animateCounter);
       } else {
         setProgress(100);
-        // On complete: 400ms delay, then onComplete()
         setTimeout(() => {
           onComplete();
-        }, 400);
+        }, 120);
       }
     };
 
@@ -54,30 +60,20 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
   return (
     <motion.div
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0, y: -20, transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
-      className="fixed inset-0 z-50 flex flex-col justify-between p-8 md:p-14 bg-[#0a0a0a] text-[#f5f5f5] select-none"
+      exit={{ opacity: 0, transition: { duration: 0.35, ease: 'easeOut' } }}
+      className="fixed inset-0 z-50 flex flex-col justify-between p-8 md:p-14 bg-[#050609] text-[#f5f5f5] select-none"
     >
       {/* Top Bar */}
       <div className="flex items-center justify-between">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="flex items-center gap-3"
-        >
+        <div className="flex items-center gap-3">
           <div className="w-2 h-2 rounded-full bg-[#89AACC] animate-ping" />
           <span className="text-xs uppercase tracking-[0.25em] text-[#878787] font-medium">
             Portfolio
           </span>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-xs tracking-widest text-[#878787] uppercase"
-        >
+        </div>
+        <div className="text-xs tracking-widest text-[#878787] uppercase">
           Saurav Thakur
-        </motion.div>
+        </div>
       </div>
 
       {/* Center Word Cycler */}
@@ -85,10 +81,10 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
         <AnimatePresence mode="wait">
           <motion.div
             key={words[currentWordIndex]}
-            initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: -40, filter: 'blur(8px)' }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
             className="text-center"
           >
             <span className="font-display italic text-6xl sm:text-7xl md:text-8xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#f5f5f5] via-[#89AACC] to-[#4E85BF]">
@@ -113,10 +109,9 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
 
         {/* Bottom progress bar with accent gradient fill */}
         <div className="w-full h-1 bg-[#1f1f1f] rounded-full overflow-hidden">
-          <motion.div
-            className="h-full rounded-full accent-gradient"
+          <div
+            className="h-full rounded-full accent-gradient transition-all duration-75 ease-out"
             style={{ width: `${progress}%` }}
-            transition={{ ease: 'linear' }}
           />
         </div>
       </div>

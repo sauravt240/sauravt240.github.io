@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import React, { useState, lazy, Suspense } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { AmbientBackground } from './components/AmbientBackground';
 import { CustomCursor } from './components/CustomCursor';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -9,11 +9,19 @@ import { TechMarquee } from './components/TechMarquee';
 import { FeaturesPhilosophy } from './components/FeaturesPhilosophy';
 import { TechStackMatrix } from './components/TechStackMatrix';
 import { FeaturedWork } from './components/FeaturedWork';
-import { InteractiveVideoSection } from './components/InteractiveVideoSection';
-import { Explorations3D } from './components/Explorations3D';
 import { Stats } from './components/Stats';
-import { Certifications } from './components/Certifications';
 import { ContactFooter } from './components/ContactFooter';
+
+// Code-split below-the-fold heavy sections
+const InteractiveVideoSection = lazy(() =>
+  import('./components/InteractiveVideoSection').then((m) => ({ default: m.InteractiveVideoSection }))
+);
+const Explorations3D = lazy(() =>
+  import('./components/Explorations3D').then((m) => ({ default: m.Explorations3D }))
+);
+const Certifications = lazy(() =>
+  import('./components/Certifications').then((m) => ({ default: m.Certifications }))
+);
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -26,18 +34,13 @@ export const App: React.FC = () => {
       {/* Atmospheric Ambient Background: Drifting Glow Orbs, Grid & Noise Overlay */}
       <AmbientBackground />
 
-      {/* Loading Screen Overlay */}
-      <AnimatePresence mode="wait">
+      {/* Loading Screen Overlay (dissolves cleanly on complete) */}
+      <AnimatePresence>
         {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
       </AnimatePresence>
 
       {/* Main Portfolio Content */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="relative z-10"
-      >
+      <div className="relative z-10">
         <Navbar />
         <main>
           <Hero />
@@ -45,13 +48,19 @@ export const App: React.FC = () => {
           <FeaturesPhilosophy />
           <TechStackMatrix />
           <FeaturedWork />
-          <InteractiveVideoSection />
-          <Explorations3D />
+          <Suspense fallback={<div className="min-h-[480px] my-12" />}>
+            <InteractiveVideoSection />
+          </Suspense>
+          <Suspense fallback={<div className="min-h-[400px] py-32" />}>
+            <Explorations3D />
+          </Suspense>
           <Stats />
-          <Certifications />
+          <Suspense fallback={<div className="min-h-[300px] py-28" />}>
+            <Certifications />
+          </Suspense>
         </main>
         <ContactFooter />
-      </motion.div>
+      </div>
     </div>
   );
 };

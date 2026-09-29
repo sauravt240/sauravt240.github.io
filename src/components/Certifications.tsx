@@ -64,7 +64,7 @@ export const Certifications: React.FC = () => {
           {certifications.map((item, index) => (
             <div
               key={item.id}
-              className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-2xl bg-[#141414]/70 border border-white/10 hover:border-[#89AACC]/40 backdrop-blur-md transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-[#4E85BF]/10"
+              className="group relative flex flex-col justify-between p-7 sm:p-8 rounded-2xl bg-[#0e121b]/90 border border-white/10 hover:border-[#89AACC]/40 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-[#4E85BF]/10"
             >
               {/* Subtle accent hover indicator */}
               <div className="absolute top-0 left-8 right-8 h-[1.5px] accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

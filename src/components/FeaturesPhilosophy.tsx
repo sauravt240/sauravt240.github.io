@@ -65,7 +65,7 @@ export const FeaturesPhilosophy: React.FC = () => {
             return (
               <div
                 key={item.title}
-                className="group relative p-7 rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] hover:border-[#8B7CFF]/40 backdrop-blur-xl transition-all duration-300 shadow-xl hover:-translate-y-1"
+                className="group relative p-7 rounded-2xl bg-[#0c0f17]/90 hover:bg-[#121622]/90 border border-white/[0.08] hover:border-[#8B7CFF]/40 transition-all duration-300 shadow-xl hover:-translate-y-1 will-change-transform"
               >
                 {/* Subtle top glow on hover */}
                 <div className={`absolute top-0 inset-x-0 h-24 bg-gradient-to-b ${item.glowColor} rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none`} />

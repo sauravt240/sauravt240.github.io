@@ -5,99 +5,134 @@ export const InteractiveVideoSection: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [isScrubbing, setIsScrubbing] = useState(false);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
   useEffect(() => {
-    const video = videoRef.current;
     const section = sectionRef.current;
-    if (!video || !section) return;
+    if (!section) return;
 
-    if (window.innerWidth < 1024) {
-      video.loop = true;
-      video.play().catch(() => {});
-      return;
-    }
+    let cleanupMouse: (() => void) | null = null;
 
-    let targetTime = 0;
-    let prevX: number | null = null;
-    let isReady = false;
-    let ticking = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        const isVisible = entry.isIntersecting;
+        const video = videoRef.current;
 
-    const handleLoadedMetadata = () => {
-      isReady = true;
-    };
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    if (video.readyState >= 1) isReady = true;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!isReady || !video.duration) return;
-
-      const rect = section.getBoundingClientRect();
-      // Check if mouse is roughly around the section
-      if (e.clientY < rect.top - 200 || e.clientY > rect.bottom + 200) {
-        prevX = null;
-        setIsScrubbing(false);
-        return;
-      }
-
-      setIsScrubbing(true);
-
-      if (prevX === null) {
-        prevX = e.clientX;
-        return;
-      }
-
-      const delta = e.clientX - prevX;
-      prevX = e.clientX;
-
-      const scrubAmount = (delta / window.innerWidth) * 1.1 * video.duration;
-      targetTime = Math.max(0, Math.min(video.duration, targetTime + scrubAmount));
-
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          if (video) {
-            video.currentTime = targetTime;
+        if (isVisible) {
+          // Lazy-load video stream on demand
+          if (!videoSrc) {
+            setVideoSrc(
+              'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260601_110537_3a579fa0-7bbc-4d94-9d25-0e816c7840f5.mp4'
+            );
           }
-          ticking = false;
-        });
-      }
-    };
 
-    const handleMouseLeave = () => {
-      prevX = null;
-      setIsScrubbing(false);
-    };
+          if (window.innerWidth < 1024 && video) {
+            video.loop = true;
+            video.play().catch(() => {});
+          } else if (window.innerWidth >= 1024) {
+            // Setup mouse scrubbing only when in view
+            let targetTime = 0;
+            let prevX: number | null = null;
+            let isReady = false;
+            let ticking = false;
 
-    window.addEventListener('mousemove', handleMouseMove);
-    section.addEventListener('mouseleave', handleMouseLeave);
+            const handleLoadedMetadata = () => {
+              isReady = true;
+            };
+
+            if (video) {
+              video.addEventListener('loadedmetadata', handleLoadedMetadata);
+              if (video.readyState >= 1) isReady = true;
+            }
+
+            const handleMouseMove = (e: MouseEvent) => {
+              if (!isReady || !video || !video.duration) return;
+
+              const rect = section.getBoundingClientRect();
+              if (e.clientY < rect.top - 150 || e.clientY > rect.bottom + 150) {
+                prevX = null;
+                setIsScrubbing(false);
+                return;
+              }
+
+              setIsScrubbing(true);
+
+              if (prevX === null) {
+                prevX = e.clientX;
+                return;
+              }
+
+              const delta = e.clientX - prevX;
+              prevX = e.clientX;
+
+              const scrubAmount = (delta / window.innerWidth) * 1.1 * video.duration;
+              targetTime = Math.max(0, Math.min(video.duration, targetTime + scrubAmount));
+
+              if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(() => {
+                  if (video) {
+                    video.currentTime = targetTime;
+                  }
+                  ticking = false;
+                });
+              }
+            };
+
+            const handleMouseLeave = () => {
+              prevX = null;
+              setIsScrubbing(false);
+            };
+
+            window.addEventListener('mousemove', handleMouseMove, { passive: true });
+            section.addEventListener('mouseleave', handleMouseLeave);
+
+            cleanupMouse = () => {
+              if (video) video.removeEventListener('loadedmetadata', handleLoadedMetadata);
+              window.removeEventListener('mousemove', handleMouseMove);
+              section.removeEventListener('mouseleave', handleMouseLeave);
+            };
+          }
+        } else {
+          // Offscreen: pause video and remove mouse listener
+          if (video && !video.paused) {
+            video.pause();
+          }
+          if (cleanupMouse) {
+            cleanupMouse();
+            cleanupMouse = null;
+          }
+          setIsScrubbing(false);
+        }
+      },
+      { rootMargin: '150px' }
+    );
+
+    observer.observe(section);
 
     return () => {
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      window.removeEventListener('mousemove', handleMouseMove);
-      section.removeEventListener('mouseleave', handleMouseLeave);
+      observer.disconnect();
+      if (cleanupMouse) cleanupMouse();
     };
-  }, []);
+  }, [videoSrc]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[540px] md:min-h-[640px] flex items-center justify-center overflow-hidden border-y border-white/[0.08] my-12"
-      aria-label="Interactive panel"
+      className="relative min-h-[480px] md:min-h-[580px] flex items-center justify-center overflow-hidden border-y border-white/[0.08] my-12"
+      aria-label="Interactive design philosophy panel"
     >
-      {/* Background Video */}
+      {/* Background Video (lazy loaded) */}
       <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
           muted
           playsInline
-          preload="auto"
+          preload="none"
+          src={videoSrc || undefined}
           className="w-full h-full object-cover object-center filter brightness-[0.45] contrast-[1.1]"
-        >
-          <source
-            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260601_110537_3a579fa0-7bbc-4d94-9d25-0e816c7840f5.mp4"
-            type="video/mp4"
-          />
-        </video>
+        />
       </div>
 
       {/* Dark Gradient Overlay for optimal contrast */}
@@ -106,10 +141,10 @@ export const InteractiveVideoSection: React.FC = () => {
 
       {/* Foreground Interactive Content */}
       <div className="relative z-20 max-w-4xl mx-auto px-6 text-center space-y-6">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-sm">
           <span className="w-2 h-2 rounded-full bg-[#4CE0B3] shadow-[0_0_8px_#4CE0B3]" />
           <span className="font-mono text-xs text-[#F3F4F6] uppercase tracking-wider font-semibold">
-            Move your cursor to scrub
+            Move cursor to scrub
           </span>
         </div>
 
@@ -122,7 +157,7 @@ export const InteractiveVideoSection: React.FC = () => {
           From multi-agent AI pipelines to polished full-stack platforms — every project starts with a clear problem and ends with an experience people actually enjoy.
         </p>
 
-        <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8B7CFF] bg-black/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8B7CFF] bg-black/60 px-4 py-2 rounded-full border border-white/10 backdrop-blur-sm">
           <RotateCcw className={`w-3.5 h-3.5 ${isScrubbing ? 'animate-spin' : ''}`} />
           <span>Move cursor left &amp; right to scrub frames in real time</span>
         </div>

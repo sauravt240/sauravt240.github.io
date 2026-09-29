@@ -151,7 +151,7 @@ export const Explorations3D: React.FC = () => {
               return (
                 <div
                   key={item.number}
-                  className="group relative rounded-2xl p-7 md:p-8 bg-[#141414]/80 border border-white/10 hover:border-[#89AACC]/40 backdrop-blur-md transition-all duration-300 shadow-2xl overflow-hidden"
+                  className="group relative rounded-2xl p-7 md:p-8 bg-[#10141f]/90 border border-white/10 hover:border-[#89AACC]/40 transition-all duration-300 shadow-2xl overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#89AACC]/10 to-transparent rounded-bl-full pointer-events-none" />
                   
@@ -196,7 +196,7 @@ export const Explorations3D: React.FC = () => {
               return (
                 <div
                   key={item.number}
-                  className="group relative rounded-2xl p-7 md:p-8 bg-[#141414]/80 border border-white/10 hover:border-[#89AACC]/40 backdrop-blur-md transition-all duration-300 shadow-2xl overflow-hidden"
+                  className="group relative rounded-2xl p-7 md:p-8 bg-[#10141f]/90 border border-white/10 hover:border-[#89AACC]/40 transition-all duration-300 shadow-2xl overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#4E85BF]/10 to-transparent rounded-bl-full pointer-events-none" />
                   
