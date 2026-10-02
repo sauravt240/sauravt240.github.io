@@ -2,88 +2,104 @@ import React from 'react';
 import { Code2, Brain, Database, Cloud } from 'lucide-react';
 
 interface StackCategory {
-  badge: string;
   title: string;
+  category: string;
   icon: React.ComponentType<{ className?: string }>;
+  summary: string;
   tags: string[];
 }
 
 const categories: StackCategory[] = [
   {
-    badge: '01 • FRONTEND & 3D',
-    title: 'Frontend & Spatial UI',
+    category: 'Spatial & Web',
+    title: 'Frontend & Creative UI',
     icon: Code2,
-    tags: ['JavaScript', 'React', 'Next.js', 'TypeScript', 'Three.js', 'Tailwind CSS', 'Figma', 'GSAP'],
+    summary: 'Building high-fidelity interactive interfaces, design systems, and silky WebGL/Three.js visual layers.',
+    tags: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'Three.js', 'Tailwind CSS', 'GSAP Motion', 'Figma'],
   },
   {
-    badge: '02 • INTELLIGENCE',
-    title: 'AI & Applied Tools',
+    category: 'Applied AI',
+    title: 'Agentic Intelligence',
     icon: Brain,
+    summary: 'Developing multi-agent orchestration pipelines, semantic similarity search, and automated prompt workflows.',
     tags: ['Multi-Agent AI', 'FastAPI', 'sentence-transformers', 'Prompt Engineering', 'LLM APIs', 'Vector Search'],
   },
   {
-    badge: '03 • SYSTEMS',
-    title: 'Backend & Database',
+    category: 'Systems & Data',
+    title: 'Backend & Databases',
     icon: Database,
-    tags: ['Python', 'Flask', 'FastAPI', 'Node.js', 'PostgreSQL', 'MongoDB', 'SQLite', 'JWT Security'],
+    summary: 'Architecting robust REST services, session security, and relational/document persistence layers.',
+    tags: ['Python', 'FastAPI', 'Flask', 'Node.js', 'PostgreSQL', 'MongoDB', 'SQLite', 'JWT Security'],
   },
   {
-    badge: '04 • INFRASTRUCTURE',
-    title: 'Cloud & DevOps',
+    category: 'Infrastructure',
+    title: 'Cloud & Deployment',
     icon: Cloud,
-    tags: ['Docker', 'AWS EC2', 'Git / GitHub', 'Linux / Bash', 'CI/CD Pipelines', 'Container Restarts'],
+    summary: 'Containerizing workloads with multi-stage Docker builds and automated AWS EC2 instance health management.',
+    tags: ['Docker', 'AWS EC2', 'Linux / Bash', 'Git / GitHub', 'CI/CD Pipelines', 'Container Recovery'],
   },
 ];
 
 export const TechStackMatrix: React.FC = () => {
   return (
-    <section id="stack" className="relative py-24 px-4 sm:px-6 md:px-12 bg-[#050609]/60 z-10">
+    <section id="stack" className="relative py-28 px-4 sm:px-6 md:px-12 lg:px-16 z-10 border-t border-white/[0.05]">
       <div className="max-w-7xl mx-auto space-y-16">
         
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 font-mono text-xs text-[#4CE0B3] uppercase tracking-[0.15em] font-semibold">
-            <span className="w-2 h-2 rounded-full bg-[#4CE0B3] shadow-[0_0_8px_#4CE0B3]" />
-            MODULAR CAPABILITIES
+        {/* Direct Confident Section Header (No numbered labels or neon pills) */}
+        <div className="max-w-2xl space-y-3 text-left">
+          <div className="inline-flex items-center gap-2 text-xs font-mono text-[#94A3B8] tracking-widest uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E2C08D]" />
+            <span>Capabilities &amp; Stack</span>
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
-            Core Technology Stack
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#F8FAFC]">
+            Core Technical Stack
           </h2>
-          <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed">
+          <p className="text-base sm:text-lg text-[#94A3B8] leading-relaxed font-light">
             Prioritizing modern frontend design and applied AI, supported by rock-solid backend, database, and cloud infrastructure.
           </p>
         </div>
 
-        {/* 4 Cards Grid */}
+        {/* 4 Cards Grid with Clean Grouped Layout (Replacing individual glowing pill overload) */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((cat) => {
             const Icon = cat.icon;
             return (
               <div
                 key={cat.title}
-                className="group relative p-7 rounded-2xl bg-[#0c0f17]/90 hover:bg-[#121622]/90 border border-white/[0.08] hover:border-[#4CE0B3]/35 transition-all duration-300 shadow-xl flex flex-col justify-between"
+                className="group relative p-7 rounded-2xl bg-white/[0.02] border border-white/[0.07] hover:border-white/20 hover:bg-white/[0.04] transition-all duration-300 flex flex-col justify-between"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-[11px] font-semibold tracking-wider text-[#94A3B8] group-hover:text-[#4CE0B3] transition-colors">
-                      {cat.badge}
+                    <span className="font-mono text-[11px] text-[#64748B] uppercase tracking-wider">
+                      {cat.category}
                     </span>
-                    <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#8B7CFF] group-hover:scale-110 transition-transform">
+                    <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#E2E8F0] group-hover:text-white transition-all">
                       <Icon className="w-4 h-4" />
                     </div>
                   </div>
 
-                  <h3 className="font-display font-bold text-xl text-white">
+                  <h3 className="font-display font-semibold text-xl text-[#F8FAFC]">
                     {cat.title}
                   </h3>
+
+                  <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed font-light">
+                    {cat.summary}
+                  </p>
                 </div>
 
-                <div className="flex flex-wrap gap-2 pt-6">
-                  {cat.tags.map((tag) => (
-                    <span key={tag} className="tag-chip text-[11px]">
-                      {tag}
-                    </span>
-                  ))}
+                {/* Clean Grouped Typography Layout (Subtle slash dividers instead of 30 glowing badge pills) */}
+                <div className="pt-6 mt-6 border-t border-white/[0.06] space-y-2">
+                  <span className="block text-[10px] font-mono uppercase tracking-widest text-[#64748B]">
+                    Technologies
+                  </span>
+                  <div className="flex flex-wrap gap-x-2.5 gap-y-1 text-xs font-mono text-[#CBD5E1]">
+                    {cat.tags.map((tag, i) => (
+                      <span key={tag} className="inline-flex items-center gap-2">
+                        <span className="hover:text-white transition-colors">{tag}</span>
+                        {i < cat.tags.length - 1 && <span className="text-[#64748B]/50 select-none">/</span>}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
             );

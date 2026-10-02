@@ -141,25 +141,25 @@ export const InteractiveVideoSection: React.FC = () => {
 
       {/* Foreground Interactive Content */}
       <div className="relative z-20 max-w-4xl mx-auto px-6 text-center space-y-6">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.06] border border-white/10 backdrop-blur-sm">
-          <span className="w-2 h-2 rounded-full bg-[#4CE0B3] shadow-[0_0_8px_#4CE0B3]" />
-          <span className="font-mono text-xs text-[#F3F4F6] uppercase tracking-wider font-semibold">
-            Move cursor to scrub
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-md">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#E2C08D]" />
+          <span className="font-mono text-xs text-[#E2E8F0] uppercase tracking-wider font-normal">
+            Move cursor to scrub frames
           </span>
         </div>
 
-        <h2 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl text-white tracking-tight leading-[1.1]">
+        <h2 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl text-[#F8FAFC] tracking-tight leading-[1.08]">
           Built with <span className="gradient-text">intention.</span><br />
           Shipped with <span className="gradient-text font-serif italic font-normal">precision.</span>
         </h2>
 
-        <p className="max-w-2xl mx-auto text-sm sm:text-base text-[#94A3B8] leading-relaxed">
+        <p className="max-w-2xl mx-auto text-base sm:text-lg text-[#94A3B8] leading-relaxed font-light">
           From multi-agent AI pipelines to polished full-stack platforms — every project starts with a clear problem and ends with an experience people actually enjoy.
         </p>
 
-        <div className="inline-flex items-center gap-2 text-xs font-mono text-[#8B7CFF] bg-black/60 px-4 py-2 rounded-full border border-white/10 backdrop-blur-sm">
-          <RotateCcw className={`w-3.5 h-3.5 ${isScrubbing ? 'animate-spin' : ''}`} />
-          <span>Move cursor left &amp; right to scrub frames in real time</span>
+        <div className="inline-flex items-center gap-2 text-xs font-mono text-[#94A3B8] bg-black/50 px-4 py-1.5 rounded-full border border-white/[0.08] backdrop-blur-sm">
+          <RotateCcw className={`w-3.5 h-3.5 text-[#E2C08D] ${isScrubbing ? 'animate-spin' : ''}`} />
+          <span>Move cursor left &amp; right to scrub video timeline</span>
         </div>
       </div>
     </section>

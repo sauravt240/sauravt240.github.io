@@ -5,7 +5,6 @@ import { CustomCursor } from './components/CustomCursor';
 import { LoadingScreen } from './components/LoadingScreen';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { TechMarquee } from './components/TechMarquee';
 import { FeaturesPhilosophy } from './components/FeaturesPhilosophy';
 import { TechStackMatrix } from './components/TechStackMatrix';
 import { FeaturedWork } from './components/FeaturedWork';
@@ -23,11 +22,11 @@ const Certifications = lazy(() =>
   import('./components/Certifications').then((m) => ({ default: m.Certifications }))
 );
 
-export const App: React.FC = () => {
+const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="min-h-screen bg-[#050609] text-[#F3F4F6] selection:bg-[#8B7CFF]/30 selection:text-white relative">
+    <div className="min-h-screen bg-[#08090D] text-[#F8FAFC] selection:bg-[#E2C08D]/25 selection:text-white relative">
       {/* Custom Interactive Cursor */}
       <CustomCursor />
 
@@ -44,7 +43,6 @@ export const App: React.FC = () => {
         <Navbar />
         <main>
           <Hero />
-          <TechMarquee />
           <FeaturesPhilosophy />
           <TechStackMatrix />
           <FeaturedWork />

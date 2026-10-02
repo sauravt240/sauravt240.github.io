@@ -34,26 +34,22 @@ export const Navbar: React.FC = () => {
       <nav
         className={`pointer-events-auto flex items-center justify-between gap-3 md:gap-8 px-4 md:px-6 py-2.5 rounded-full transition-all duration-500 border ${
           scrolled
-            ? 'bg-[#0a0a0a]/80 backdrop-blur-xl border-white/12 shadow-2xl shadow-black/50'
-            : 'bg-[#141414]/60 backdrop-blur-md border-white/8'
+            ? 'bg-[#090A0E]/85 backdrop-blur-xl border-white/10 shadow-2xl shadow-black/60'
+            : 'bg-[#090A0E]/40 backdrop-blur-md border-white/[0.07]'
         }`}
       >
-        {/* Logo: Circular avatar/initials "ST" with accent gradient ring, reverses direction on hover */}
+        {/* Logo: Monogram "ST" with clean tactile ring */}
         <a
           href="#home"
           onClick={(e) => scrollToSection(e, '#home')}
           className="group flex items-center gap-3 select-none"
         >
-          <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-[#0a0a0a] p-[1.5px] overflow-hidden">
-            {/* Spinning accent gradient ring (reverses on hover) */}
-            <div className="absolute inset-0 rounded-full accent-gradient animate-[spin_3s_linear_infinite] group-hover:[animation-direction:reverse] will-change-transform" />
-            <div className="relative z-10 flex items-center justify-center w-full h-full rounded-full bg-[#0e0e0e] border border-white/10 group-hover:border-white/25 transition-colors">
-              <span className="font-display italic text-sm font-semibold tracking-tighter text-[#f5f5f5] group-hover:text-white">
-                ST
-              </span>
-            </div>
+          <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/[0.04] border border-white/15 p-[1px] group-hover:border-white/30 transition-colors">
+            <span className="font-display italic text-xs font-semibold tracking-tighter text-[#F8FAFC]">
+              ST
+            </span>
           </div>
-          <span className="hidden sm:inline-block font-medium text-xs tracking-wider uppercase text-[#f5f5f5]/90">
+          <span className="hidden sm:inline-block font-medium text-xs tracking-wider uppercase text-[#E2E8F0]">
             Saurav Thakur
           </span>
         </a>
@@ -65,23 +61,21 @@ export const Navbar: React.FC = () => {
               key={item.label}
               href={item.href}
               onClick={(e) => scrollToSection(e, item.href)}
-              className="px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-medium text-[#878787] hover:text-[#f5f5f5] hover:bg-white/5 transition-all"
+              className="px-2.5 sm:px-3.5 py-1.5 rounded-full text-xs font-medium text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-white/[0.05] transition-all"
             >
               {item.label}
             </a>
           ))}
         </div>
 
-        {/* "Say hi" button -> scrolls to contact, with gradient hover border */}
+        {/* "Say hi" tactile button */}
         <a
           href="#contact"
           onClick={(e) => scrollToSection(e, '#contact')}
-          className="group relative inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-semibold text-[#f5f5f5] bg-white/5 hover:bg-white/10 transition-all border border-white/10 hover:border-transparent overflow-hidden"
+          className="group inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-medium text-[#F8FAFC] bg-white/[0.06] hover:bg-white/[0.12] transition-all duration-300 border border-white/10 hover:border-white/20"
         >
-          {/* Accent hover border layer */}
-          <span className="absolute inset-0 rounded-full p-[1px] opacity-0 group-hover:opacity-100 transition-opacity accent-gradient -z-10" />
           <span>Say hi</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-[#89AACC] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          <ArrowUpRight className="w-3.5 h-3.5 text-[#94A3B8] group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
         </a>
       </nav>
     </header>

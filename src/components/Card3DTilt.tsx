@@ -15,7 +15,6 @@ export const Card3DTilt: React.FC<Card3DTiltProps> = ({
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const glareRef = useRef<HTMLDivElement>(null);
-  const isHoveredRef = useRef(false);
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -54,14 +53,12 @@ export const Card3DTilt: React.FC<Card3DTiltProps> = ({
   };
 
   const handleMouseEnter = () => {
-    isHoveredRef.current = true;
     if (glare && glareRef.current) {
       glareRef.current.style.opacity = '1';
     }
   };
 
   const handleMouseLeave = () => {
-    isHoveredRef.current = false;
     if (rafRef.current) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;

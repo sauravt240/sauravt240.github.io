@@ -8,7 +8,10 @@ interface LoadingScreenProps {
 const words = ['Design', 'Build', 'Ship'];
 
 export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
-  const [progress, setProgress] = useState(0);
+  const [isReduced] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  const [progress, setProgress] = useState(() => (isReduced ? 100 : 0));
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
   // Rotating words cycling every 300ms
@@ -21,9 +24,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
 
   // Snappy requestAnimationFrame counter 000 -> 100
   useEffect(() => {
-    const isReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (isReduced) {
-      setProgress(100);
       onComplete();
       return;
     }

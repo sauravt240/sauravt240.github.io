@@ -6,49 +6,44 @@ import { Cpu, Layers, Server, Sparkles } from 'lucide-react';
 gsap.registerPlugin(ScrollTrigger);
 
 interface ExplorationCard {
-  number: string;
   category: string;
   title: string;
   description: string;
-  badges: string[];
+  tags: string[];
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const explorations: ExplorationCard[] = [
   {
-    number: '01',
     category: 'Applied AI',
     title: 'Multi-Agent AI Pipelines & LLM Orchestration',
     description:
       'Designing cooperative multi-agent workflows with specialized roles: resume matching, JD extraction, tailoring agents, and automated interview question generation with semantic similarity search.',
-    badges: ['FastAPI', 'Sentence-Transformers', 'Prompt Engineering', 'LangChain Patterns'],
+    tags: ['FastAPI', 'sentence-transformers', 'Prompt Engineering', 'LangChain Patterns'],
     icon: Cpu,
   },
   {
-    number: '02',
     category: 'System Architecture',
     title: 'Full-Stack & Role-Authenticated Platforms',
     description:
       'Architecting secure role-based portals for university-wide collaboration and high-concurrency esports tournament platforms with live slot synchronization.',
-    badges: ['Next.js', 'PostgreSQL', 'Drizzle ORM', 'JWT Security', 'Leaflet.js'],
+    tags: ['Next.js', 'PostgreSQL', 'Drizzle ORM', 'JWT Security', 'Leaflet.js'],
     icon: Layers,
   },
   {
-    number: '03',
     category: 'Cloud & DevOps',
     title: 'Containerized Cloud Deployments',
     description:
       'Containerizing Python and web workloads with multi-stage Docker builds, hosting on AWS EC2 with systemd and container health-monitoring restart policies.',
-    badges: ['Docker', 'AWS EC2', 'Linux / Bash', 'Git Actions', 'Reverse Proxy'],
+    tags: ['Docker', 'AWS EC2', 'Linux / Bash', 'Git Actions', 'Reverse Proxy'],
     icon: Server,
   },
   {
-    number: '04',
     category: 'Creative Engineering',
     title: 'Spatial Web & Interactive 3D Interfaces',
     description:
       'Merging WebGL, Three.js, and kinetic typography to deliver immersive, silky-smooth 60fps web experiences that respect device performance and accessibility.',
-    badges: ['Three.js', 'React Three Fiber', 'GSAP ScrollTrigger', 'Tailwind CSS'],
+    tags: ['Three.js', 'React Three Fiber', 'GSAP ScrollTrigger', 'Tailwind CSS'],
     icon: Sparkles,
   },
 ];
@@ -63,21 +58,18 @@ export const Explorations3D: React.FC = () => {
     if (isReduced) return;
 
     const ctx = gsap.context(() => {
-      // 3D Parallax scroll effect on column cards
       if (leftColRef.current && rightColRef.current) {
         gsap.fromTo(
           leftColRef.current,
           {
-            y: 50,
-            rotateX: 4,
-            rotateY: -6,
-            z: 0,
+            y: 40,
+            rotateX: 3,
+            rotateY: -4,
           },
           {
-            y: -80,
-            rotateX: -3,
-            rotateY: 4,
-            z: 40,
+            y: -60,
+            rotateX: -2,
+            rotateY: 3,
             ease: 'none',
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -91,16 +83,14 @@ export const Explorations3D: React.FC = () => {
         gsap.fromTo(
           rightColRef.current,
           {
-            y: -40,
-            rotateX: -4,
-            rotateY: 6,
-            z: -20,
+            y: -30,
+            rotateX: -3,
+            rotateY: 4,
           },
           {
-            y: 90,
-            rotateX: 3,
-            rotateY: -5,
-            z: 30,
+            y: 70,
+            rotateX: 2,
+            rotateY: -3,
             ease: 'none',
             scrollTrigger: {
               trigger: sectionRef.current,
@@ -116,123 +106,79 @@ export const Explorations3D: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
+  const renderCard = (item: ExplorationCard) => {
+    const Icon = item.icon;
+    return (
+      <div
+        key={item.category}
+        className="group relative rounded-3xl p-8 bg-white/[0.02] border border-white/[0.07] hover:border-white/20 transition-all duration-300 shadow-xl overflow-hidden"
+      >
+        <div className="space-y-5">
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-xs text-[#E2C08D] font-medium uppercase tracking-wider">
+              {item.category}
+            </span>
+            <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#E2E8F0] group-hover:text-white transition-transform">
+              <Icon className="w-5 h-5" />
+            </div>
+          </div>
+
+          <h3 className="font-display font-semibold text-2xl text-[#F8FAFC]">
+            {item.title}
+          </h3>
+
+          <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed font-light">
+            {item.description}
+          </p>
+
+          <div className="flex flex-wrap gap-x-2.5 gap-y-1 pt-4 border-t border-white/[0.06] text-xs font-mono text-[#CBD5E1]">
+            {item.tags.map((tag, i) => (
+              <span key={tag} className="inline-flex items-center gap-2">
+                <span className="text-[#94A3B8] group-hover:text-[#E2E8F0] transition-colors">{tag}</span>
+                {i < item.tags.length - 1 && <span className="text-[#64748B]/40 select-none">/</span>}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section
       id="explorations"
       ref={sectionRef}
-      className="relative py-32 px-4 sm:px-6 md:px-12 bg-[#0a0a0a] overflow-hidden perspective-[1200px]"
+      className="relative py-28 px-4 sm:px-6 md:px-12 lg:px-16 overflow-hidden perspective-[1200px] border-t border-white/[0.05]"
     >
-      {/* Subtle radial glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#4E85BF]/5 rounded-full blur-[140px] pointer-events-none" />
-
-      <div className="relative max-w-7xl mx-auto space-y-20">
-        {/* Section Header */}
-        <div className="max-w-3xl space-y-4">
-          <div className="inline-flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#89AACC]" />
-            <span className="text-xs uppercase tracking-[0.25em] text-[#878787] font-semibold">
-              Explorations &amp; Architecture
-            </span>
+      <div className="relative max-w-7xl mx-auto space-y-16">
+        
+        {/* Direct Confident Section Header */}
+        <div className="max-w-2xl space-y-3 text-left">
+          <div className="inline-flex items-center gap-2 text-xs font-mono text-[#94A3B8] tracking-widest uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E2C08D]" />
+            <span>Architecture &amp; Focus</span>
           </div>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal tracking-tight text-[#f5f5f5]">
-            Engineering <span className="font-display italic text-[#89AACC]">pillars</span>
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[#F8FAFC]">
+            Engineering <span className="gradient-text font-serif italic font-normal">pillars</span>
           </h2>
-          <p className="text-sm sm:text-base text-[#878787] leading-relaxed">
+          <p className="text-base sm:text-lg text-[#94A3B8] leading-relaxed font-light">
             Depth across applied artificial intelligence, high-throughput web applications, and resilient cloud architectures.
           </p>
         </div>
 
-        {/* 2-Column Parallax Grid with 3D Depth Shift */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12" style={{ transformStyle: 'preserve-3d' }}>
+        {/* 2-Column Parallax Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10" style={{ transformStyle: 'preserve-3d' }}>
+          
           {/* Left Column */}
           <div ref={leftColRef} className="space-y-8" style={{ transformStyle: 'preserve-3d' }}>
-            {[explorations[0], explorations[2]].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.number}
-                  className="group relative rounded-2xl p-7 md:p-8 bg-[#10141f]/90 border border-white/10 hover:border-[#89AACC]/40 transition-all duration-300 shadow-2xl overflow-hidden"
-                >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#89AACC]/10 to-transparent rounded-bl-full pointer-events-none" />
-                  
-                  <div className="space-y-5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs text-[#89AACC] font-semibold tracking-wider">
-                        {item.number} — {item.category}
-                      </span>
-                      <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#89AACC] group-hover:scale-110 transition-transform">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                    </div>
-
-                    <h3 className="text-xl sm:text-2xl font-medium text-[#f5f5f5] group-hover:text-white transition-colors">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-sm text-[#878787] leading-relaxed">
-                      {item.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {item.badges.map((badge) => (
-                        <span
-                          key={badge}
-                          className="px-2.5 py-1 rounded text-[11px] font-mono bg-white/[0.03] text-[#878787] border border-white/5"
-                        >
-                          {badge}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {[explorations[0], explorations[2]].map(renderCard)}
           </div>
 
           {/* Right Column */}
-          <div ref={rightColRef} className="space-y-8 md:mt-14" style={{ transformStyle: 'preserve-3d' }}>
-            {[explorations[1], explorations[3]].map((item) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={item.number}
-                  className="group relative rounded-2xl p-7 md:p-8 bg-[#10141f]/90 border border-white/10 hover:border-[#89AACC]/40 transition-all duration-300 shadow-2xl overflow-hidden"
-                >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#4E85BF]/10 to-transparent rounded-bl-full pointer-events-none" />
-                  
-                  <div className="space-y-5">
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono text-xs text-[#89AACC] font-semibold tracking-wider">
-                        {item.number} — {item.category}
-                      </span>
-                      <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-[#89AACC] group-hover:scale-110 transition-transform">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                    </div>
-
-                    <h3 className="text-xl sm:text-2xl font-medium text-[#f5f5f5] group-hover:text-white transition-colors">
-                      {item.title}
-                    </h3>
-
-                    <p className="text-sm text-[#878787] leading-relaxed">
-                      {item.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {item.badges.map((badge) => (
-                        <span
-                          key={badge}
-                          className="px-2.5 py-1 rounded text-[11px] font-mono bg-white/[0.03] text-[#878787] border border-white/5"
-                        >
-                          {badge}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          <div ref={rightColRef} className="space-y-8 md:mt-12" style={{ transformStyle: 'preserve-3d' }}>
+            {[explorations[1], explorations[3]].map(renderCard)}
           </div>
+
         </div>
       </div>
     </section>
