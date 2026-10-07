@@ -7,12 +7,7 @@ const Hero3DScene = React.lazy(() =>
   import('./Hero3DScene').then((m) => ({ default: m.Hero3DScene }))
 );
 
-const roles = [
-  'AI Engineer',
-  'Frontend Engineer',
-  'Full-Stack Developer',
-  'UI/UX-minded Builder',
-];
+const roles = ['AI Engineer', 'Frontend Engineer', 'Full-Stack Developer', 'UI/UX-minded Builder'];
 
 export const Hero: React.FC = () => {
   const [roleIndex, setRoleIndex] = useState(0);
@@ -20,7 +15,6 @@ export const Hero: React.FC = () => {
   const leftColRef = useRef<HTMLDivElement>(null);
   const rightColRef = useRef<HTMLDivElement>(null);
 
-  // Smooth role cycling every 2.4s
   useEffect(() => {
     const roleInterval = setInterval(() => {
       setRoleIndex((prev) => (prev + 1) % roles.length);
@@ -28,35 +22,21 @@ export const Hero: React.FC = () => {
     return () => clearInterval(roleInterval);
   }, []);
 
-  // GSAP entrance animation with editorial ease
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
       if (leftColRef.current) {
-        tl.fromTo(
-          leftColRef.current.children,
-          { opacity: 0, y: 28 },
-          { opacity: 1, y: 0, duration: 1.0, stagger: 0.1, delay: 0.1 }
-        );
+        tl.fromTo(leftColRef.current.children, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 1.0, stagger: 0.1, delay: 0.1 });
       }
-
       if (rightColRef.current) {
-        tl.fromTo(
-          rightColRef.current,
-          { opacity: 0, scale: 0.96, y: 20 },
-          { opacity: 1, scale: 1, y: 0, duration: 1.1 },
-          '-=0.7'
-        );
+        tl.fromTo(rightColRef.current, { opacity: 0, scale: 0.96, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 1.1 }, '-=0.7');
       }
     }, heroRef);
-
     return () => ctx.revert();
   }, []);
 
   const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -67,11 +47,9 @@ export const Hero: React.FC = () => {
     >
       <div className="relative z-10 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          
-          {/* Left Column: Confident Editorial Typography */}
+
+          {/* Left Column */}
           <div ref={leftColRef} className="lg:col-span-7 space-y-6 text-left">
-            
-            {/* Live Status Indicator (Quiet, understated pill) */}
             <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] backdrop-blur-md">
               <span className="status-dot active" />
               <span className="text-xs font-mono text-[#94A3B8] font-normal tracking-wide">
@@ -79,18 +57,14 @@ export const Hero: React.FC = () => {
               </span>
             </div>
 
-            {/* Main Headline (sceneai.art style: confident, restrained, serif italic highlight) */}
             <div className="space-y-1">
               <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-[4.75rem] tracking-tight text-[#F8FAFC] leading-[1.05]">
                 I design &amp; build <br />
-                <span className="font-serif italic font-normal text-white gradient-text">
-                  AI-powered products
-                </span> <br />
+                <span className="font-serif italic font-normal text-white gradient-text">AI-powered products</span> <br />
                 people actually enjoy.
               </h1>
             </div>
 
-            {/* Dynamic Role Carousel */}
             <div className="text-base sm:text-lg md:text-xl font-light text-[#94A3B8] flex flex-wrap items-center gap-2">
               <span className="text-[#64748B]">Specializing as</span>
               <span className="relative inline-flex items-center px-3 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08] text-white font-mono text-sm sm:text-base font-medium transition-all duration-300">
@@ -99,12 +73,10 @@ export const Hero: React.FC = () => {
               <span>— building things that ship.</span>
             </div>
 
-            {/* Description Prose */}
             <p className="max-w-xl text-base sm:text-lg text-[#94A3B8] leading-relaxed font-light">
               Computer Science (AI) graduate blending applied AI, clean frontend engineering, and thoughtful UI/UX — with full-stack and database skills to bring it all together.
             </p>
 
-            {/* Skiper-UI High-Craft Tactile Action Buttons */}
             <div className="flex flex-wrap items-center gap-4 pt-1">
               <button
                 onClick={() => scrollToSection('work')}
@@ -126,7 +98,6 @@ export const Hero: React.FC = () => {
               </a>
             </div>
 
-            {/* Clean Editorial Capability Points (Replacing noisy badge walls) */}
             <div className="pt-5 border-t border-white/[0.06] grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
               <div>
                 <p className="font-mono text-[11px] text-[#64748B] uppercase tracking-wider mb-0.5">Applied AI</p>
@@ -141,16 +112,11 @@ export const Hero: React.FC = () => {
                 <p className="text-xs text-[#CBD5E1] font-medium">Python, FastAPI &amp; SQL</p>
               </div>
             </div>
-
           </div>
 
-          {/* Right Column: Single Purposeful 3D Studio Stage (Spline.design inspired) */}
+          {/* Right Column */}
           <div ref={rightColRef} className="lg:col-span-5 w-full">
-            <React.Suspense
-              fallback={
-                <div className="w-full min-h-[460px] rounded-3xl bg-white/[0.02] border border-white/[0.06] animate-pulse" />
-              }
-            >
+            <React.Suspense fallback={<div className="w-full min-h-[460px] rounded-3xl bg-white/[0.02] border border-white/[0.06] animate-pulse" />}>
               <Hero3DScene />
             </React.Suspense>
           </div>
@@ -158,14 +124,11 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Understated Editorial Scroll Indicator */}
       <div
         onClick={() => scrollToSection('about')}
         className="mt-14 lg:mt-16 flex flex-col items-center justify-center gap-2 cursor-pointer group z-20 text-[#64748B] hover:text-[#CBD5E1] transition-colors"
       >
-        <span className="text-[10px] uppercase font-mono font-medium tracking-[0.25em]">
-          Scroll to explore
-        </span>
+        <span className="text-[10px] uppercase font-mono font-medium tracking-[0.25em]">Scroll to explore</span>
         <div className="w-4 h-7 rounded-full border border-white/15 p-1 flex justify-center">
           <div className="w-1 h-2 rounded-full bg-[#E2C08D] animate-scroll-down" />
         </div>

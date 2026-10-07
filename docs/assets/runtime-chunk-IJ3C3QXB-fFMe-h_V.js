@@ -1,0 +1,1 @@
+import{y as e}from"./runtime-chunk-LMFUBJAV-R2_OmHkq.js";function t(n){if(n.component){let r=n.component.instances.indexOf(n);r>=0&&n.component.instances.splice(r,1);for(let r of n.children)e.is(r)&&t(r)}}export{t};
