@@ -185,10 +185,10 @@ export const Hero3DScene: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full max-w-[480px] lg:max-w-none mx-auto h-[440px] sm:h-[480px] lg:h-[520px] flex flex-col justify-between rounded-3xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.08] backdrop-blur-xl shadow-[0_24px_60px_rgba(0,0,0,0.55)] overflow-hidden select-none group"
+      className="relative w-full max-w-[480px] lg:max-w-none mx-auto h-[380px] sm:h-[480px] lg:h-[520px] flex flex-col justify-between rounded-3xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.08] backdrop-blur-xl shadow-[0_24px_60px_rgba(0,0,0,0.55)] overflow-hidden select-none group"
     >
       {/* Studio Header Bar */}
-      <div className="relative z-10 flex items-center justify-between px-6 pt-5 text-xs font-mono text-[#94A3B8]">
+      <div className="relative z-10 flex items-center justify-between px-4 sm:px-6 pt-4 sm:pt-5 text-xs font-mono text-[#94A3B8]">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#E2C08D] animate-pulse" />
           <span className="tracking-wider uppercase text-[11px] font-medium text-white/90">
@@ -203,7 +203,7 @@ export const Hero3DScene: React.FC = () => {
       {/* Interactive 3D Canvas Area — hover to tilt, drag to spin */}
       <div
         ref={canvasWrapRef}
-        className={`relative flex-1 w-full h-full cursor-${isDragging ? 'grabbing' : 'grab'} active:cursor-grabbing flex items-center justify-center`}
+        className={`relative flex-1 w-full h-full touch-pan-y cursor-${isDragging ? 'grabbing' : 'grab'} active:cursor-grabbing flex items-center justify-center`}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}

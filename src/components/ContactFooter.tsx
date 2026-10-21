@@ -21,9 +21,11 @@ export const ContactFooter: React.FC = () => {
       
       {/* Toast Notification */}
       {copied && (
-        <div className="fixed bottom-8 right-8 z-50 flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#141720] border border-white/20 text-[#F8FAFC] font-mono text-xs shadow-2xl animate-in fade-in slide-in-from-bottom-3 duration-300">
-          <Check className="w-4 h-4 text-[#34D399]" />
-          <span>Email copied to clipboard: {email}</span>
+        <div className="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:right-8 sm:w-auto z-50 flex items-center justify-between sm:justify-start gap-2.5 px-4 py-3 rounded-2xl sm:rounded-full bg-[#141720]/95 backdrop-blur-xl border border-white/20 text-[#F8FAFC] font-mono text-xs shadow-2xl animate-in fade-in slide-in-from-bottom-3 duration-300">
+          <div className="flex items-center gap-2 truncate">
+            <Check className="w-4 h-4 text-[#34D399] shrink-0" />
+            <span className="truncate">Email copied: {email}</span>
+          </div>
         </div>
       )}
 

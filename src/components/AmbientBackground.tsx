@@ -192,11 +192,13 @@ export const AmbientBackground: React.FC = () => {
       ctx.globalCompositeOperation = 'source-over';
 
       // ── 2 & 3. Wireframe icosahedron + particles ───────────────────────
+      // On mobile viewports, the ambient gradient and film grain are kept, while
+      // skipping the 3D vertex projections and particle math for butter-smooth scrolling.
+      if (W <= 768) return;
+
       // Centre: slightly right of viewport centre, vertically centred in hero
       const cx = W * 0.70;
       const cy = H * 0.50;
-      // Scale so icosahedron is large but clearly behind the hero card.
-      // On mobile fall to 0.28 * W so it doesn't dominate small screens.
       const scale = Math.min(W * 0.22, H * 0.32, 260);
 
       // Rotation angles: slow auto-spin + cursor tilt offset

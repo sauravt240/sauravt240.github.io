@@ -15,9 +15,6 @@ import { ContactFooter } from './components/ContactFooter';
 const InteractiveVideoSection = lazy(() =>
   import('./components/InteractiveVideoSection').then((m) => ({ default: m.InteractiveVideoSection }))
 );
-const Explorations3D = lazy(() =>
-  import('./components/Explorations3D').then((m) => ({ default: m.Explorations3D }))
-);
 const Certifications = lazy(() =>
   import('./components/Certifications').then((m) => ({ default: m.Certifications }))
 );
@@ -26,7 +23,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="min-h-screen bg-[#08090D] text-[#F8FAFC] selection:bg-[#E2C08D]/25 selection:text-white relative">
+    <div className="min-h-screen bg-[#08090D] text-[#F8FAFC] selection:bg-[#E2C08D]/25 selection:text-white relative overflow-x-clip">
       {/* Custom Interactive Cursor */}
       <CustomCursor />
 
@@ -48,9 +45,6 @@ const App: React.FC = () => {
           <FeaturedWork />
           <Suspense fallback={<div className="min-h-[480px] my-12" />}>
             <InteractiveVideoSection />
-          </Suspense>
-          <Suspense fallback={<div className="min-h-[400px] py-32" />}>
-            <Explorations3D />
           </Suspense>
           <Stats />
           <Suspense fallback={<div className="min-h-[300px] py-28" />}>

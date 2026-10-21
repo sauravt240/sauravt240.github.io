@@ -58,16 +58,16 @@ export const Hero: React.FC = () => {
             </div>
 
             <div className="space-y-1">
-              <h1 className="font-display font-bold text-4xl sm:text-6xl md:text-7xl lg:text-[4.75rem] tracking-tight text-[#F8FAFC] leading-[1.05]">
+              <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-6xl lg:text-[4.75rem] tracking-tight text-[#F8FAFC] leading-[1.08] sm:leading-[1.05]">
                 I design &amp; build <br />
                 <span className="font-serif italic font-normal text-white gradient-text">AI-powered products</span> <br />
                 people actually enjoy.
               </h1>
             </div>
 
-            <div className="text-base sm:text-lg md:text-xl font-light text-[#94A3B8] flex flex-wrap items-center gap-2">
+            <div className="text-sm sm:text-lg md:text-xl font-light text-[#94A3B8] flex flex-wrap items-center gap-1.5 sm:gap-2">
               <span className="text-[#64748B]">Specializing as</span>
-              <span className="relative inline-flex items-center px-3 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08] text-white font-mono text-sm sm:text-base font-medium transition-all duration-300">
+              <span className="relative inline-flex items-center px-2.5 sm:px-3 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08] text-white font-mono text-xs sm:text-base font-medium transition-all duration-300">
                 {roles[roleIndex]}
               </span>
               <span>— building things that ship.</span>

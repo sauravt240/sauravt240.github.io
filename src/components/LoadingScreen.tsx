@@ -54,7 +54,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
-  }, [onComplete]);
+  }, [isReduced, onComplete]);
 
   const formattedProgress = progress.toString().padStart(3, '0');
 

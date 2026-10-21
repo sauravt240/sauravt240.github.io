@@ -32,21 +32,20 @@ export const CustomCursor: React.FC = () => {
     window.addEventListener('resize', resize);
 
     // ── Trail state ────────────────────────────────────────────────────────
-    // Ring cursor target position (snaps instantly via RAF)
     let tx = -200, ty = -200;
-    // Smooth dot position (lerps toward ring — slight lag gives it life)
     let sx = -200, sy = -200;
-    // Trail history [{x, y}, ...]
     const trail: { x: number; y: number }[] = [];
     let visible = false;
+    let isRunning = false;
+    let idleFrames = 0;
 
     // ── Render ─────────────────────────────────────────────────────────────
     const render = () => {
-      rafRef.current = requestAnimationFrame(render);
-
       // Update smooth dot position (lerp — creates the gentle lag)
-      sx += (tx - sx) * 0.18;
-      sy += (ty - sy) * 0.18;
+      const dx = tx - sx;
+      const dy = ty - sy;
+      sx += dx * 0.18;
+      sy += dy * 0.18;
 
       // Update ring + DOM dot position
       if (cursorEl) cursorEl.style.transform = `translate3d(${tx}px, ${ty}px, 0)`;
@@ -58,17 +57,39 @@ export const CustomCursor: React.FC = () => {
 
       // Draw trail on canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (!visible || trail.length < 2) return;
+      if (visible && trail.length >= 2) {
+        trail.forEach((pt, i) => {
+          const t = i / (trail.length - 1);
+          const r = TRAIL_RADIUS * t;
+          const a = t * t * (isHoveringRef.current ? 0.55 : 0.35);
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, Math.max(r, 0.5), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${ACCENT_R},${ACCENT_G},${ACCENT_B},${a})`;
+          ctx.fill();
+        });
+      }
 
-      trail.forEach((pt, i) => {
-        const t = i / (trail.length - 1);           // 0 = oldest, 1 = newest
-        const r = TRAIL_RADIUS * t;                  // radius shrinks toward tail
-        const a = t * t * (isHoveringRef.current ? 0.55 : 0.35); // opacity
-        ctx.beginPath();
-        ctx.arc(pt.x, pt.y, Math.max(r, 0.5), 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${ACCENT_R},${ACCENT_G},${ACCENT_B},${a})`;
-        ctx.fill();
-      });
+      // If settled and idle, suspend RAF loop until next mouse move
+      if (Math.abs(dx) < 0.2 && Math.abs(dy) < 0.2) {
+        idleFrames++;
+        if (idleFrames > 30) {
+          isRunning = false;
+          rafRef.current = null;
+          return;
+        }
+      } else {
+        idleFrames = 0;
+      }
+
+      rafRef.current = requestAnimationFrame(render);
+    };
+
+    const startLoop = () => {
+      idleFrames = 0;
+      if (!isRunning) {
+        isRunning = true;
+        rafRef.current = requestAnimationFrame(render);
+      }
     };
 
     // ── Mouse events ───────────────────────────────────────────────────────
@@ -78,11 +99,12 @@ export const CustomCursor: React.FC = () => {
 
       if (!visible) {
         visible = true;
-        // Teleport smooth pos to avoid initial sweep from corner
         sx = tx; sy = ty;
         if (cursorEl) cursorEl.style.opacity = '1';
         if (dotEl)    dotEl.style.opacity    = '1';
       }
+
+      startLoop();
 
       const target = e.target as HTMLElement | null;
       const interactive = !!(
@@ -90,8 +112,7 @@ export const CustomCursor: React.FC = () => {
           target.tagName === 'A' ||
           target.tagName === 'BUTTON' ||
           target.closest('a') ||
-          target.closest('button') ||
-          target.closest('[data-cursor="pointer"]')
+          target.closest('button')
         )
       );
 
@@ -104,14 +125,19 @@ export const CustomCursor: React.FC = () => {
     const onLeave = () => {
       visible = false;
       trail.length = 0;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (cursorEl) cursorEl.style.opacity = '0';
       if (dotEl)    dotEl.style.opacity    = '0';
+      isRunning = false;
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
     };
 
     window.addEventListener('mousemove', onMove, { passive: true });
     document.addEventListener('mouseleave', onLeave);
-
-    rafRef.current = requestAnimationFrame(render);
+    startLoop();
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);

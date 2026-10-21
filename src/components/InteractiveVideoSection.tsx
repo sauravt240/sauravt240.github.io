@@ -5,11 +5,11 @@ const Spline = lazy(() => import('@splinetool/react-spline'));
 
 export const InteractiveVideoSection: React.FC = () => (
   <section
-    className="relative min-h-[540px] md:min-h-[640px] flex items-center justify-center overflow-hidden border-y border-white/[0.08] my-12"
+    className="relative min-h-[460px] sm:min-h-[540px] md:min-h-[640px] flex items-center justify-center overflow-hidden border-y border-white/[0.08] my-8 sm:my-12"
     aria-label="Interactive 3D design section"
   >
     {/* Spline 3D — full-bleed background */}
-    <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 z-0 touch-pan-y">
       <Suspense fallback={
         <div className="w-full h-full flex items-center justify-center">
           <div className="w-10 h-10 rounded-full border-2 border-[#E2C08D]/40 border-t-[#E2C08D] animate-spin" />
@@ -17,7 +17,7 @@ export const InteractiveVideoSection: React.FC = () => (
       }>
         <Spline
           scene="https://prod.spline.design/qNgjR-5EktPe3lge/scene.splinecode"
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: '100%', height: '100%', touchAction: 'pan-y' }}
         />
       </Suspense>
     </div>
